@@ -1,41 +1,43 @@
-require 'sinatra'
+require 'roda'
 require 'json'
 
-set :public_folder, 'public'
+class App < Roda
+  plugin :json
+  plugin :render, engine: 'erb', views: 'views'
+  plugin :public, root: 'public'
 
-# Landing page
-get '/' do
-  erb :index
-end
+  SCORES_FILE = "scores.json"
 
-# Highscores API
-SCORES_FILE = "scores.json"
-
-helpers do
   def read_scores
-    File.exist?(SCORES_FILE) ? JSON.parse(File.read(SCORES_FILE)) : []
+    return [] unless File.exist?(SCORES_FILE)
+    content = File.read(SCORES_FILE).strip
+    content.empty? ? [] : JSON.parse(content)
   end
+
   def write_scores(data)
     File.write(SCORES_FILE, JSON.pretty_generate(data))
   end
-end
 
-get '/api/highscores' do
-  content_type :json
-  read_scores.sort_by { |s| -s["score"] }.take(10).to_json
-end
+  route do |r|
+    # Landing page (render index.erb)
+    r.root do
+      view("index", layout: false)
+    end
 
-post '/api/highscores' do
-  content_type :json
-  request.body.rewind
-  data = JSON.parse(request.body.read) rescue {}
-  if data["player"] && data["score"]
-    scores = read_scores
-    scores << { "player" => data["player"], "score" => data["score"], "time" => Time.now.to_s }
-    write_scores(scores)
-    { status: "ok" }.to_json
-  else
-    halt 400, { error: "Invalid payload" }.to_json
+    r.on "api" do
+      r.on "highscores" do
+        r.get do
+          read_scores.sort_by { |s| -s["score"].to_i }.take(10)
+        end
+
+        r.post do
+          data = r.params.empty? ? JSON.parse(r.body.read) : r.params
+          scores = read_scores
+          scores << { "player" => data["player"], "score" => data["score"].to_i }
+          write_scores(scores)
+          { status: "ok" }
+        end
+      end
+    end
   end
 end
-
