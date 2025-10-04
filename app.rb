@@ -2,6 +2,7 @@ require 'roda'
 require 'json'
 
 class App < Roda
+  # DEV URL =  strangely-distinct-longhorn.ngrok-free.app
   plugin :json
   plugin :render, engine: 'erb', views: 'views'
   plugin :public, root: 'public'
