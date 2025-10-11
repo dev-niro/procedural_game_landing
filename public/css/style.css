@@ -1,5 +1,12 @@
+@font-face {
+  font-family: 'Cyberpunk';
+  src: url('/fonts/CyberpunkCraftpixPixel.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Cyberpunk', sans-serif;
 }
 
 h1, h2 {
@@ -12,4 +19,148 @@ section {
 
 footer {
   font-size: 0.9rem;
+}
+
+/* ===== Hero Section con fondo GIF ===== */
+.hero-section {
+  position: relative;
+  height: 100vh; /* ocupa toda la altura del viewport */
+  background: url("/img/gif_gameplay.gif") center center / cover no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  overflow: hidden;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Capa oscura encima del fondo para mejorar legibilidad */
+.hero-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 0;
+}
+
+/* Contenido encima del fondo */
+.hero-content {
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+}
+
+/* Transición visual entre el hero y el resto */
+.hero-section::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, #0d0d0d 100%);
+  z-index: 1;
+}
+
+/* ===== Secciones tipo Testimonial ===== */
+#about,
+#leaderboard,
+#features,
+#screenshots,
+#testimonials {
+  background: linear-gradient(180deg, #111 0%, #1c1c1c 100%);
+  color: #ddd;
+  padding: 4rem 0;
+}
+
+/* Títulos de sección */
+#about h2,
+#leaderboard h2,
+#features h2,
+#screenshots h2,
+#testimonials h2 {
+  color: #00ffcc;
+  text-shadow: 0 0 12px rgba(0, 255, 204, 0.4);
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Tarjetas */
+#leaderboard .card,
+#about .card,
+#features .card,
+#screenshots .card,
+#testimonials .card {
+  background-color: #181818;
+  border: none;
+  color: #eee;
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover en tarjetas */
+#about .card:hover,
+#leaderboard .card:hover,
+#features .card:hover,
+#screenshots .card:hover,
+#testimonials .card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 20px rgba(0, 255, 204, 0.3);
+}
+
+/* Textos */
+#about .card-text,
+#leaderboard .card-text,
+#features .card-text,
+#screenshots .card-text,
+#testimonials .card-text {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #ccc;
+}
+
+#about .card-title,
+#leaderboard .card-title,
+#features .card-title,
+#screenshots .card-title,
+#testimonials .card-title {
+  color: #00ffcc;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+}
+
+/* Imágenes (solo screenshots) */
+#screenshots img {
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#screenshots img:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 25px rgba(0, 255, 204, 0.3);
+}
+
+/* ===== Ajuste de texto en About ===== */
+#about p {
+  max-width: 700px;          /* limita el ancho del texto */
+  margin: 0 auto;            /* centra horizontalmente */
+  text-align: center;        /* alinea el texto al centro */
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #ccc;
+  padding: 0 1rem;           /* evita que pegue con los bordes en pantallas chicas */
+}
+
+
+h2 {
+  color: #00ffcc;
+  text-shadow: 0 0 15px rgba(0, 255, 204, 0.6);
+  font-weight: bold;
+  letter-spacing: 1px;
 }

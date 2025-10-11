@@ -2,11 +2,11 @@ require 'roda'
 require 'json'
 
 class App < Roda
-  # DEV URL =  strangely-distinct-longhorn.ngrok-free.app
   plugin :json
   plugin :render, engine: 'erb', views: 'views'
-  plugin :public, root: 'public'
+  plugin :static, ["/css", "/img", "/fonts"]  # sirve los archivos desde /public
 
+  # DEV URL = strangely-distinct-longhorn.ngrok-free.app
   SCORES_FILE = "scores.json"
 
   def read_scores
@@ -20,17 +20,20 @@ class App < Roda
   end
 
   route do |r|
-    # Landing page (render index.erb)
+    # === Landing Page ===
     r.root do
       view("index", layout: false)
     end
 
+    # === API ===
     r.on "api" do
       r.on "highscores" do
+        # GET /api/highscores → lista de puntajes
         r.get do
           read_scores.sort_by { |s| -s["score"].to_i }.take(10)
         end
 
+        # POST /api/highscores → guarda nuevo puntaje
         r.post do
           data = r.params.empty? ? JSON.parse(r.body.read) : r.params
           scores = read_scores
