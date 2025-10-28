@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "player": null,
+    "score": 0
+  },
+  {
+    "player": "niro",
+    "levels": 1,
+    "time": 6.50164599999996
+  }
+]

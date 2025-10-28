@@ -37,7 +37,7 @@ class App < Roda
         r.post do
           data = r.params.empty? ? JSON.parse(r.body.read) : r.params
           scores = read_scores
-          scores << { "player" => data["player"], "score" => data["score"].to_i }
+          scores << { "player" => data["player"], "levels" => data["levels"].to_i, "time" => data["time"].to_f  }
           write_scores(scores)
           { status: "ok" }
         end
