@@ -4,6 +4,7 @@ ruby "3.4.6" # optional but recommended
 
 gem "roda"
 gem "puma"
+gem "rackup"
 
 # Add ONLY if you use them:
 # gem "faraday"
