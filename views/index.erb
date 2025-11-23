@@ -102,11 +102,15 @@
   </section>
 
   <!-- Leaderboard Section -->
-  <section id="leaderboard" class="bg-secondary py-5">
-    <h2 class="text-center mb-4">Global Leaderboard</h2>
-    <ul id="scores" class="list-group list-group-flush bg-dark text-light"></ul>
+  <section id="leaderboard" class="leaderboard-section py-5">
+    <h2 class="text-center mb-4 leaderboard-title">GLOBAL LEADERBOARD</h2>
+
+    <ul id="scores" class="leaderboard-list"></ul>
+
     <div class="text-center mt-4">
-      <a href="#hero" class="btn btn-lg btn-success">¡Intentalo y entra al ranking!</a>
+      <a href="#hero" class="btn btn-lg btn-success neon-button">
+        ¡Intentalo y entra al ranking!
+      </a>
     </div>
   </section>
 
@@ -119,15 +123,34 @@
     async function loadScores() {
       let res = await fetch('/api/highscores');
       let scores = await res.json();
+
+      // Ordenar: niveles DESC, tiempo ASC
+      scores.sort((a, b) => {
+        if (b.levels !== a.levels) return b.levels - a.levels;
+        return a.time - b.time;
+      });
+
       let list = document.getElementById('scores');
       list.innerHTML = "";
-      scores.forEach(s => {
+
+      scores.forEach((s, index) => {
         let li = document.createElement('li');
-        li.className = "list-group-item bg-dark text-light";
-        li.innerText = `${s.player}: ${s.score}`;
+
+        // Determinar medalla
+        let medal = "";
+        if (index === 0) medal = "🥇 ";
+        else if (index === 1) medal = "🥈 ";
+        else if (index === 2) medal = "🥉 ";
+
+        // Tiempo formateado
+        let t = s.time.toFixed(3);
+
+        li.textContent = `${medal}${s.player.toUpperCase()} — NIVELES: ${s.levels} — TIEMPO: ${t}s`;
+
         list.appendChild(li);
       });
     }
+
     loadScores();
   </script>
 

@@ -164,3 +164,79 @@ h2 {
   font-weight: bold;
   letter-spacing: 1px;
 }
+
+/* Fondo */
+.leaderboard-section {
+  background: #0b0e13; /* Dark sci-fi */
+}
+
+/* Título neon */
+.leaderboard-title {
+  color: #00f7ff;
+  font-family: "Orbitron", sans-serif;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px #00f7ff;
+}
+
+/* Lista limpia */
+.leaderboard-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 700px;
+}
+
+/* Items */
+.leaderboard-list li {
+  background: #11161d;
+  color: #e6eef7;
+  padding: 15px 20px;
+  margin: 6px 0;
+  border-radius: 6px;
+
+  font-family: "Orbitron", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 1px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: 1px solid rgba(0, 255, 255, 0.1);
+  transition: all 0.2s ease;
+}
+
+/* Hover neon */
+.leaderboard-list li:hover {
+  border-color: #00f7ff;
+  box-shadow: 0 0 12px rgba(0, 247, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Botón neon */
+.neon-button {
+  font-family: "Orbitron", sans-serif;
+  letter-spacing: 1px;
+  box-shadow: 0 0 12px rgba(0,255,128,0.5);
+  transition: all 0.2s ease;
+}
+
+.neon-button:hover {
+  box-shadow: 0 0 20px rgba(0,255,128,0.9);
+  transform: translateY(-2px);
+}
+
+.leaderboard-list li:nth-child(1) {
+  border-color: gold;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+}
+
+.leaderboard-list li:nth-child(2) {
+  border-color: silver;
+  box-shadow: 0 0 12px rgba(192, 192, 192, 0.5);
+}
+
+.leaderboard-list li:nth-child(3) {
+  border-color: #cd7f32; /* bronce */
+  box-shadow: 0 0 12px rgba(205, 127, 50, 0.5);
+}
