@@ -104,6 +104,12 @@ class App < Roda
           end
         end
       end
+      # === PING ===
+      r.on "ping" do
+        r.get do
+          { ok: true, time: Time.now.to_i }
+        end
+      end
     end
   end
 end
