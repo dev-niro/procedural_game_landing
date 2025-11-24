@@ -83,34 +83,59 @@ class App < Roda
       r.on "highscores" do
         # GET /api/highscores → SCORES LIST
         r.get do
-          player = r.params["player"].to_s.strip   # siempre será String
-          if !player.empty?
-            read_scores.select { |s| s["player"] == player }
+          scores = read_scores
+          id_param = r.params["id"].to_s.strip
+
+          if !id_param.empty?
+            # Search by ID
+            wanted_id = id_param.to_i
+            scores.select { |s| s["id"].to_i == wanted_id }
           else
-            read_scores
-              .sort_by { |s| -s["score"].to_i }
+            # TOP 10
+            scores
+              .sort_by { |s| [-s["levels"].to_i, s["time"].to_f] }
               .take(10)
           end
         end
         
         # POST /api/highscores → SAVE SCORES
         r.post do
-          data = r.params.empty? ? JSON.parse(r.body.read) : r.params
+          raw_data = r.params.empty? ? JSON.parse(r.body.read) : r.params
+
+          puts "📥 RAW HIGHSCORE DATA: #{raw_data.inspect}"
+
           scores = read_scores
-          scores << { "player" => data["player"], "levels" => data["levels"].to_i, "time" => data["time"].to_f  }
+
+          # NEXT ID
+          last_id = scores.map { |s| s["id"].to_i }.max || 0
+          next_id = last_id + 1
+
+          new_score = {
+            "id"     => next_id,
+            "player" => raw_data["player"],
+            "levels" => raw_data["levels"].to_i,
+            "time"   => raw_data["time"].to_f
+          }
+
+          puts "💾 SAVING HIGHSCORE: #{new_score.inspect}"
+
+          scores << new_score
           write_scores(scores)
-          { status: "ok" }
+
+          { status: "ok", id: next_id, new_score: new_score }
         end
       end
+
       # === MATH ===
       r.on "math" do
         r.on "random" do
           # GET /api/math/random → GET EQUATION
           r.get do
-            create_math_equation(r.params["vars"],r.params["complexity"])
+            create_math_equation(r.params["vars"], r.params["complexity"])
           end
         end
       end
+
       # === PING ===
       r.on "ping" do
         r.get do
