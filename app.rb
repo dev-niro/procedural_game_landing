@@ -83,7 +83,14 @@ class App < Roda
       r.on "highscores" do
         # GET /api/highscores → SCORES LIST
         r.get do
-          read_scores.sort_by { |s| -s["score"].to_i }.take(10)
+          player = r.params["player"].to_s.strip   # siempre será String
+          if !player.empty?
+            read_scores.select { |s| s["player"] == player }
+          else
+            read_scores
+              .sort_by { |s| -s["score"].to_i }
+              .take(10)
+          end
         end
         
         # POST /api/highscores → SAVE SCORES
